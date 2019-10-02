@@ -27,8 +27,11 @@ serverPort = 12000
 serverSocket = socket(AF_INET,SOCK_STREAM)
 serverSocket.bind(('',serverPort))
 serverSocket.listen(1)
-print("The tcp server is ready to receive")
+count = 0
+
 while 1:
+	count+=1
+	print("The tcp server is ready to receive:",count)
 	connectionSocket, addr = serverSocket.accept()
 	packet = connectionSocket.recv(1024)
 	packet = packet.decode('utf-8')
