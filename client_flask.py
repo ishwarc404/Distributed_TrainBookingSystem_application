@@ -3,6 +3,12 @@ import json
 from socket import *
 
 
+'''
+NOTE: The print statements used are just for testing
+if the information exchange is working perfectly or not
+
+The info_receieved_html is just a tester web page
+'''
 
 app = Flask(__name__)
 
@@ -28,13 +34,13 @@ def initial_user_data():
 
     #lets bundle everything up to pass to the client socket function
     packet = [source_location,destination_location,date_of_travel,passenger_count] #just checking
-    client_socket(packet) #sending this packet to the client socket function
-
-    return render_template("info_recieved.html")
+    received_packet = client_socket(packet) #sending this packet to the client socket function
+    processed_packet = [str(i) for i in received_packet] #processing to handle the unicode encoding
+    print("recieved packet type:",processed_packet)
+    return render_template("train_schedules.html",output=processed_packet)
 
 
 def client_socket(packet):
-    
     serverName = '127.0.0.1'
     serverPort = 12000
     clientSocket = socket(AF_INET, SOCK_STREAM)
@@ -43,9 +49,12 @@ def client_socket(packet):
     packet_json = json.dumps(packet)
     print(type(packet_json))
     clientSocket.send(packet_json)
-    recieved_packet = clientSocket.recv(1024)
-    print ("From Server:", recieved_packet)
+    received_packet = clientSocket.recv(1024)
+    print ("From Server:",received_packet)
     clientSocket.close()
+    print("hello here")
+    received_packet = json.loads(received_packet) #converting the json string to a list
+    return received_packet #returning it back to the initial_user_datafunction
 
 
 
