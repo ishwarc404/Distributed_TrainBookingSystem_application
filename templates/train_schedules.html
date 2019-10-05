@@ -1,14 +1,49 @@
 <html>
+        <head>
+                <link rel="stylesheet" href="train_schedules.css">
+        </head>
     <body>
         <h2>AVAILABLE TRAIN INFORMATION</h2>
-        <p>
-        </p>
+        <div id="schedule_div">
+
+
+        </div>
     </body>
 
     <script>    
-    
-    var application_names = JSON.parse('{{ output | tojson }}');
-	console.log(application_names);
-    
+    function geek(name) { 
+			var myDiv = document.getElementById("schedule_div"); 
+			
+            
+			// creating checkbox element 
+			var row = document.createElement('tr'); 
+            var x = row.insertCell(0);
+            x.innerHTML = name[0];
+            var x = row.insertCell(1);
+            x.innerHTML = name[1];
+            var x = row.insertCell(2);
+            x.innerHTML = name[2];
+            var x = row.insertCell(3);
+            x.innerHTML = name[3];
+            var x = row.insertCell(4);
+            x.innerHTML = name[4];
+            console.log(row);
+            console.log(myDiv);
+		
+        
+
+			myDiv.appendChild(row); 
+	
+
+			
+		} 
+    var trains = JSON.parse('{{ output | tojson }}');
+
+    for (i = 0; i < trains.length; i++) { 
+            var name = trains[i];
+            console.log(name)
+        }
+
+        geek(trains)
     </script>
 </html>
