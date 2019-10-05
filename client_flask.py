@@ -35,6 +35,7 @@ def initial_user_data():
     #lets bundle everything up to pass to the client socket function
     packet = [source_location,destination_location,date_of_travel,passenger_count] #just checking
     received_packet = client_socket(packet) #sending this packet to the client socket function
+    received_packet = received_packet[0]
     processed_packet = [str(i) for i in received_packet] #processing to handle the unicode encoding
     print("recieved packet type:",processed_packet)
     return render_template("train_schedules.html",output=processed_packet)

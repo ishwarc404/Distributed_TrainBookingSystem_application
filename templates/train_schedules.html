@@ -1,6 +1,14 @@
 <html>
     <body>
         <h2>AVAILABLE TRAIN INFORMATION</h2>
-        <p>{{ output }}</p>
+        <p>
+        </p>
     </body>
+
+    <script>    
+    
+    var application_names = JSON.parse('{{ output | tojson }}');
+	console.log(application_names);
+    
+    </script>
 </html>

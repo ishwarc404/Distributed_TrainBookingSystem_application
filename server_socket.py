@@ -1,6 +1,7 @@
 from socket import *
 import MySQLdb
 import json
+from datetime import datetime
 
 def schedule_packetparse(packet_to_parse):
 	#packet parse will basically convert the list into dictionary
@@ -38,12 +39,16 @@ def schedule_database_access(packet):
 
 	results = cursor.fetchall()
 	print((results))
-	for row in results:
-		print((row))
+	# for row in results:
+	# 	print((row))
+	returned_row = []
+	for i in results:
+		returned_row += [list(i)]
 	
-	returned_row = list(results)[0]
-	returned_row = returned_row[1:] #removing the indexing and 
-	returned_row = returned_row[:-1] #removing the timing for now coz json cannot pack it
+	#need to convert the timedelta into a string
+	for i in returned_row:
+		i[-1] = str(i[-1])
+		
 	return returned_row
 
 
