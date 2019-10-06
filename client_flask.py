@@ -16,6 +16,14 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route("/booking_train",methods = ['POST','GET']) #when the person clicks on Book
+def booking(): 
+    source = str(request.form['source'])
+    destination = str(request.form['destination'])
+    train_name = str(request.form['train_name'])
+    print("THE TRAIN U BOOKED IS",train_name," from: ",source," to: ",destination)
+    return render_template("booking_confirmation.html",booked_train_details = [source,destination,train_name])
+
 
 @app.route('/initial_user_data',methods = ['POST','GET'])
 def initial_user_data():
@@ -35,9 +43,15 @@ def initial_user_data():
     #lets bundle everything up to pass to the client socket function
     packet = [source_location,destination_location,date_of_travel,passenger_count] #just checking
     received_packet = client_socket(packet) #sending this packet to the client socket function
-    received_packet = received_packet[0]
-    print(received_packet)
-    processed_packet = [str(i) for i in received_packet] #processing to handle the unicode encoding
+    print("All the rows recieved:",received_packet)
+    print("packets recieved were printed above")
+    #received_packet = received_packet[0] #to just test printing a single row
+    #print(received_packet)
+    #processed_packet = [str(i) for i in received_packet] #processing to handle the unicode encoding
+    processed_packet = []
+    for i in received_packet:
+        processed_packet += [str(j) for j in i] #processing to handle the unicode encoding
+
     print("recieved packet type:",processed_packet)
     return render_template("train_schedules.html",output=processed_packet)
 

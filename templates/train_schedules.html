@@ -34,24 +34,29 @@
             var x = row.insertCell(3);
             x.innerHTML = name[3];
             var x = row.insertCell(4);
-            x.innerHTML = name[4];
+            x.innerHTML = "<form action='/booking_train' method='POST'><input type='text' name='source' value="+name[0]+" hidden/><input type='text' name='destination' value="+name[1]+" hidden/><input type='text' name='train_name' value="+name[2]+" hidden/><button>BOOK</button></form>";
             console.log(row);
             console.log(myDiv);
-		
-        
 
 			myDiv.appendChild(row); 
-	
+            return;
 
 			
 		} 
     var trains = JSON.parse('{{ output | tojson }}');
 
-    for (i = 0; i < trains.length; i++) { 
-            var name = trains[i];
-            console.log(name)
+    //console.log(trains)
+    for (i = 0; i < trains.length;) 
+        { 
+            //console.log(trains[])
+            var trains_data = [trains[i+1],trains[i+2],trains[i+3],trains[i+4]];
+            // //var name = trains[i];
+            // //console.log("TRAIN STATUS")
+            console.log(trains_data);
+            geek(trains_data);
+            i=i+5;
         }
 
-        geek(trains)
+        
     </script>
 </html>

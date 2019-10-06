@@ -34,7 +34,12 @@ def schedule_database_access(packet):
 	cursor = db.cursor()
 
 	#table name is trains
-	sql = 'SELECT * FROM trains where From_City= \'{}\' AND To_City=\'{}\''.format(parsed_packet["Source"],parsed_packet["Destination"])
+
+	#proper sql command
+	#sql = 'SELECT * FROM trains where From_City= \'{}\' AND To_City=\'{}\''.format(parsed_packet["Source"],parsed_packet["Destination"])
+	
+	#test sql command to return multiple rows
+	sql = 'SELECT * FROM trains' #where From_City= \'{}\' AND To_City=\'{}\''.format(parsed_packet["Source"],parsed_packet["Destination"])
 	cursor.execute(sql)
 
 	results = cursor.fetchall()
@@ -48,7 +53,7 @@ def schedule_database_access(packet):
 	#need to convert the timedelta into a string
 	for i in returned_row:
 		i[-1] = str(i[-1])
-		
+
 	return returned_row
 
 
