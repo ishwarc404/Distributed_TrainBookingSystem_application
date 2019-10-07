@@ -16,6 +16,5 @@ This line :: https://github.com/ishwarc404/Distributed_TrainBookingSystem_applic
 
 #Need to work on:
 1. Fix "Chennai Express" name display 
-2. Build the booking confirmation page..
-3. Populate the "trains" databases with more train details.
-4. Build the flask and db connections for the "passenger" database.
+2. Populate the "trains" databases with more train details : CURRENTLY WORKING ON
+3. Build the flask and db connections for the "passenger" database.
