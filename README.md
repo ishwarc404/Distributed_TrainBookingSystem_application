@@ -18,3 +18,8 @@ This line :: https://github.com/ishwarc404/Distributed_TrainBookingSystem_applic
 1. Fix "Chennai Express" name display 
 2. Populate the "trains" databases with more train details : CURRENTLY WORKING ON
 3. Build the flask and db connections for the "passenger" database.
+
+#MAJOR CHANGES REQUIRED:
+1. Remove number of passengers from index
+2. Add "Seats Available" to the trains table and show it accordingly on booking page
+3. Restructure passenger table a little
