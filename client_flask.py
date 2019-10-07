@@ -27,9 +27,16 @@ def booking():
 @app.route("/booking_payment",methods = ['POST','GET']) #when the person finishes entering passenger details
 def payment():
     #we first need to get the numbe of passengers that were registered
-    no_of_passengers = request.form["counter_text"]
-    print(no_of_passengers)
-    return render_template("booking_payment.html", no_of_passengers =no_of_passengers)
+    no_of_passengers = int(request.form['counter_text'])
+    #print(no_of_passengers)
+    passenger_data = []
+    for i in range(1,no_of_passengers+1):
+        passenger_name = str(request.form["passenger_name"+str(i)])
+        passenger_age = str(request.form["passenger_age"+str(i)])
+        passenger_data+=[[passenger_name,passenger_age]]
+
+    passenger_data = json.dumps(passenger_data) #showing all passenger data
+    return render_template("booking_payment.html", no_of_passengers =passenger_data)
 
 
 @app.route('/initial_user_data',methods = ['POST','GET'])

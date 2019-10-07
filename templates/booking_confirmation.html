@@ -3,15 +3,17 @@
     <body>
         <H1>YOUR BOOKED TRAIN DETAILS ARE</H1>
         <div>{{booked_train_details}}</div>
+       
         <div >
-            <button onclick="add_passenger()">Add Passenger</button>
-        </div>
-        <div >
-            <form action="/booking_payment" id="passenger_details">
-                <input type="text" value="" name="counter_text" id="counter_text">
-                <button id="submit_button">submit</button>
-            </form>
-        </div>
+                <button onclick="add_passenger()">Add Passenger</button>
+            </div>
+            <div >
+                <form action="/booking_payment" id="passenger_details" method="POST">
+                    <input type="text" value="" name="counter_text" id="counter_text">
+                    <button id="submit_button">submit</button>
+                </form>
+            </div>
+
     </body>
     
     <script>
@@ -36,6 +38,7 @@
             //var submit_button = "<button type='submit'>"
             x.innerHTML = "<br>"+pass_name+"<br>"+pass_age+"<br>"
             myDiv.insertBefore(row,button);
+            return;
         }
     
     
