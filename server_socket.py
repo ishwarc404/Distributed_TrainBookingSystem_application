@@ -10,10 +10,19 @@ def passenger_database_access(packet):
 		passenger_data["Name"]+=[packet[i]] 
 		passenger_data["Age"]+=[packet[i+1]] 
 
-	#print(passenger_data)
+	print("PASSENGER DATA",passenger_data)
 	
 	#now we need to connect and access the sql database
-	
+	db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
+
+	# prepare a cursor object using cursor() method
+	cursor = db.cursor()
+
+	#we are not querying anything but
+	sql = 'SELECT * FROM trains' 
+	cursor.execute(sql)
+
+
 	return
 
 
@@ -47,6 +56,7 @@ def schedule_database_access(packet):
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 
+
 	#table name is trains
 
 	#proper sql command
@@ -72,9 +82,9 @@ def schedule_database_access(packet):
 	
 	#need to convert the timedelta into a string
 	for i in returned_row:
-		i[-1] = str(i[-1])
+		i[-2] = str(i[-2])
 
-	#print("All rows returned::",returned_row)
+	print("All rows returned::",returned_row)
 	return returned_row
 
 

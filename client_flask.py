@@ -43,7 +43,7 @@ def payment():
             new_single_list+=[j]
    
     #commenting the following line for now until the database is sorted
-    #client_socket(new_single_list) #we do this as in the server, json cannot process a list oflis
+    client_socket(new_single_list) #we do this as in the server, json cannot process a list oflis
     
     passenger_data = json.dumps(passenger_data) #showing all passenger data
     return render_template("booking_payment.html", no_of_passengers =passenger_data)
