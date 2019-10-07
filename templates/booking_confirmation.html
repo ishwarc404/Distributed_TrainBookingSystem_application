@@ -9,8 +9,12 @@
             </div>
             <div >
                 <form action="/booking_payment" id="passenger_details" method="POST">
-                    <input type="text" value="" name="counter_text" id="counter_text">
-                    <button id="submit_button">submit</button>
+                    Passenger Name: <input type='text' name='passenger_name1' required>
+                    <br>
+                    Passenger Age: <input type='number' name='passenger_age1' required>
+                    <br>
+                    <input type="text" value="" name="counter_text" id="counter_text" hidden>
+                    <button id="submit_button">CONFIRM BOOKING</button>
                 </form>
             </div>
 
@@ -18,7 +22,7 @@
     
     <script>
 
-        var counter = 0;
+        var counter = 1;
         function add_passenger()
         {
             counter = counter +1 ;
@@ -34,7 +38,7 @@
             var age = "passenger_age"+counter.toString();
             //console.log(name)
             var pass_name = "Passenger Name: <input type='text' name='"+name+"' required>"
-            var pass_age = "Passengee Age: <input type='number' name='"+age+"' required>"
+            var pass_age = "Passenger Age: <input type='number' name='"+age+"' required>"
             //var submit_button = "<button type='submit'>"
             x.innerHTML = "<br>"+pass_name+"<br>"+pass_age+"<br>"
             myDiv.insertBefore(row,button);
