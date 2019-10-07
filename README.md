@@ -4,6 +4,8 @@
 1. Install flask
 2. Install sql and import the db
 3. SQL server needs to be running
+4. Note: If MySQL is not installed, don't worry , just uncomment lines 45 and 46 in server_socket.py ; 
+This line :: https://github.com/ishwarc404/Distributed_TrainBookingSystem_application/blob/392546eedb963b44439fcec701dfd1481087e863/server_socket.py#L45
 
 #To run
 1. run server_socket.py
