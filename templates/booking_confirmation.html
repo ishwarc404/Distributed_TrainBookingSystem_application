@@ -3,5 +3,42 @@
     <body>
         <H1>YOUR BOOKED TRAIN DETAILS ARE</H1>
         <div>{{booked_train_details}}</div>
+        <div >
+            <button onclick="add_passenger()">Add Passenger</button>
+        </div>
+        <div >
+            <form action="/booking_payment" id="passenger_details">
+                <input type="text" value="" name="counter_text" id="counter_text">
+                <button id="submit_button">submit</button>
+            </form>
+        </div>
     </body>
+    
+    <script>
+
+        var counter = 0;
+        function add_passenger()
+        {
+            counter = counter +1 ;
+            var myDiv = document.getElementById("passenger_details"); 
+            var button = document.getElementById("submit_button")
+            var counter_input = document.getElementById("counter_text")
+            counter_input.value = counter;
+            console.log(counter_input.value);
+        
+            var row = document.createElement('tr'); 
+            var x = row.insertCell(0);
+            var name = "passenger_name"+counter.toString();
+            var age = "passenger_age"+counter.toString();
+            //console.log(name)
+            var pass_name = "Passenger Name: <input type='text' name='"+name+"' required>"
+            var pass_age = "Passengee Age: <input type='number' name='"+age+"' required>"
+            //var submit_button = "<button type='submit'>"
+            x.innerHTML = "<br>"+pass_name+"<br>"+pass_age+"<br>"
+            myDiv.insertBefore(row,button);
+        }
+    
+    
+    
+    </script>
 </html>

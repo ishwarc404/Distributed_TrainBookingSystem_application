@@ -16,13 +16,20 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/booking_train",methods = ['POST','GET']) #when the person clicks on Book
+@app.route("/booking_confirmation",methods = ['POST','GET']) #when the person clicks on Book
 def booking(): 
     source = str(request.form['source'])
     destination = str(request.form['destination'])
     train_name = str(request.form['train_name'])
     print("THE TRAIN U BOOKED IS",train_name," from: ",source," to: ",destination)
     return render_template("booking_confirmation.html",booked_train_details = [source,destination,train_name])
+
+@app.route("/booking_payment",methods = ['POST','GET']) #when the person finishes entering passenger details
+def payment():
+    #we first need to get the numbe of passengers that were registered
+    no_of_passengers = request.form["counter_text"]
+    print(no_of_passengers)
+    return render_template("booking_payment.html", no_of_passengers =no_of_passengers)
 
 
 @app.route('/initial_user_data',methods = ['POST','GET'])

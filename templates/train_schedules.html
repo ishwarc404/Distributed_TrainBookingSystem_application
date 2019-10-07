@@ -34,7 +34,7 @@
             var x = row.insertCell(3);
             x.innerHTML = name[3];
             var x = row.insertCell(4);
-            x.innerHTML = "<form action='/booking_train' method='POST'><input type='text' name='source' value="+name[0]+" hidden/><input type='text' name='destination' value="+name[1]+" hidden/><input type='text' name='train_name' value="+name[2]+" hidden/><button>BOOK</button></form>";
+            x.innerHTML = "<form action='/booking_confirmation' method='POST'><input type='text' name='source' value="+name[0]+" hidden/><input type='text' name='destination' value="+name[1]+" hidden/><input type='text' name='train_name' value="+name[2]+" hidden/><button>BOOK</button></form>";
             console.log(row);
             console.log(myDiv);
 
