@@ -3,13 +3,27 @@ import MySQLdb
 import json
 from datetime import datetime
 
+
+def passenger_database_access(packet):
+	passenger_data = {"Name":[],"Age":[]} #we need to make a list now with the passenger names and age
+	for i in range(0,len(packet),2):
+		passenger_data["Name"]+=[packet[i]] 
+		passenger_data["Age"]+=[packet[i+1]] 
+
+	#print(passenger_data)
+	
+	#now we need to connect and access the sql database
+	
+	return
+
+
+
 def schedule_packetparse(packet_to_parse):
 	#packet parse will basically convert the list into dictionary
 	#this will enable easy access to the db
 	packet_dictionary = {"Source":packet_to_parse[0],"Destination":packet_to_parse[1],"Date":packet_to_parse[2]}
 
 	return packet_dictionary
-
 
 def schedule_database_access(packet):
 
@@ -49,7 +63,7 @@ def schedule_database_access(packet):
 	cursor.execute(sql)
 
 	results = cursor.fetchall()
-	print((results))
+	#print((results))
 	# for row in results:
 	# 	print((row))
 	returned_row = []
@@ -60,7 +74,7 @@ def schedule_database_access(packet):
 	for i in returned_row:
 		i[-1] = str(i[-1])
 
-	print("All rows returned::",returned_row)
+	#print("All rows returned::",returned_row)
 	return returned_row
 
 
@@ -87,15 +101,26 @@ while 1:
 	#now lets call a function which will read the sql database and then return the values stored in it
 	packet = json.loads(packet)
 
-	#getting all the rows retrived from the database
-	values = schedule_database_access(packet)
+	#Note that passenger details will come in as a single list and 
+	#not as a list of list coz json cannot decode
 
-
-	return_packet = list(values) #sending just the first row for now #only 1 row will be sent back as there is only 1 train for every source and destination pair
-	print("here",return_packet)
-	return_packet = json.dumps(return_packet)
-	print("type",type(return_packet))
-	connectionSocket.send((return_packet).encode())
-	connectionSocket.close() 
+	#WE NEED TO DIFFERENTIATE BETWEEN THE PAKCETS FOR THE 2 DB ACCESSES
+	#FOR NOW LET'S JUST SEE HOW MANY VALUES ARE THERE
+	if(len(packet)!=3):
+		print("DB ACCESS 2")
+		passenger_database_access(packet)
+		connectionSocket.close() 
+		#means it is the index page database access
+	else:
+		print("DB ACCESS 1")
+		values = schedule_database_access(packet)
+		print("PACKET PRINTING:",packet,type(packet))
+		#getting all the rows retrived from the database
+		return_packet = values #sending just the first row for now #only 1 row will be sent back as there is only 1 train for every source and destination pair
+		print("here",return_packet)
+		return_packet = json.dumps(return_packet)
+		print("type",type(return_packet))
+		connectionSocket.send((return_packet).encode())
+		connectionSocket.close() 
 
 

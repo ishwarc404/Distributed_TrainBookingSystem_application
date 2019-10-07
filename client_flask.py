@@ -27,14 +27,24 @@ def booking():
 @app.route("/booking_payment",methods = ['POST','GET']) #when the person finishes entering passenger details
 def payment():
     #we first need to get the numbe of passengers that were registered
-    no_of_passengers = int(request.form['counter_text'])
-    #print(no_of_passengers)
+    no_of_passengers = request.form['counter_text']
+    no_of_passengers = int(no_of_passengers)
+
     passenger_data = []
     for i in range(1,no_of_passengers+1):
         passenger_name = str(request.form["passenger_name"+str(i)])
         passenger_age = str(request.form["passenger_age"+str(i)])
         passenger_data+=[[passenger_name,passenger_age]]
 
+    
+    new_single_list = []
+    for i in passenger_data:
+        for j in i:
+            new_single_list+=[j]
+   
+    #commenting the following line for now until the database is sorted
+    #client_socket(new_single_list) #we do this as in the server, json cannot process a list oflis
+    
     passenger_data = json.dumps(passenger_data) #showing all passenger data
     return render_template("booking_payment.html", no_of_passengers =passenger_data)
 
@@ -49,13 +59,13 @@ def initial_user_data():
     date_of_travel = request.form['date_of_travel']
     passenger_count = request.form['passenger_count']
 
-    print(source_location,destination_location,date_of_travel,passenger_count) #just checking
+    print(source_location,destination_location,date_of_travel) #just checking
     '''
     the following function will be used to create a socke and will be used
     to connect to the server socket and pass the information to it '''
 
     #lets bundle everything up to pass to the client socket function
-    packet = [source_location,destination_location,date_of_travel,passenger_count] #just checking
+    packet = [source_location,destination_location,date_of_travel] #just checking
     received_packet = client_socket(packet) #sending this packet to the client socket function
     print("All the rows recieved:",received_packet)
     print("packets recieved were printed above")
@@ -77,6 +87,7 @@ def client_socket(packet):
     clientSocket.connect((serverName,serverPort))
 
     packet_json = json.dumps(packet)
+    print("Sent from Client to the Sever:=",packet_json)
     print(type(packet_json))
     clientSocket.send(packet_json)
     received_packet = clientSocket.recv(1024)

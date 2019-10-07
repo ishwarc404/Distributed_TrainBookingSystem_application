@@ -13,7 +13,7 @@
                     <br>
                     Passenger Age: <input type='number' name='passenger_age1' required>
                     <br>
-                    <input type="text" value="" name="counter_text" id="counter_text" hidden>
+                    <input type="number" value="1" name="counter_text" id="counter_text" hidden>
                     <button id="submit_button">CONFIRM BOOKING</button>
                 </form>
             </div>
@@ -22,8 +22,8 @@
     
     <script>
 
-        var counter = 1;
-        function add_passenger()
+        var counter = 1; //counter is 1 as we already have a single passenget field
+        function add_passenger() //dynamically creating more fields
         {
             counter = counter +1 ;
             var myDiv = document.getElementById("passenger_details"); 
