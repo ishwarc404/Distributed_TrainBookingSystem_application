@@ -13,8 +13,7 @@
     <body>
         <h2>AVAILABLE TRAIN INFORMATION</h2>
         <div id="schedule_div">
-
-
+           
         </div>
     </body>
 
@@ -25,38 +24,63 @@
             
 			// creating checkbox element 
 			var row = document.createElement('tr'); 
-            var x = row.insertCell(0);
+            var x = row.insertCell(0);   //source
             x.innerHTML = name[0];
-            var x = row.insertCell(1);
+            var x = row.insertCell(1); //destination
             x.innerHTML = name[1];
-            var x = row.insertCell(2);
+            var x = row.insertCell(2); //train name
             x.innerHTML = name[2];
-            var x = row.insertCell(3);
+            var x = row.insertCell(3); //time
             x.innerHTML = name[3];
-            var x = row.insertCell(4);
+            var x = row.insertCell(4); //seats capacity 
             x.innerHTML = name[4];
-            var x = row.insertCell(5);
-            x.innerHTML = "<form action='/booking_confirmation' method='POST'><input type='text' name='source' value="+name[0]+" hidden/><input type='text' name='destination' value="+name[1]+" hidden/><input type='text' name='train_name' value="+name[2]+" hidden/><button>BOOK</button></form>";
-            console.log(row);
-            console.log(myDiv);
+            var x = row.insertCell(5); //seats available after any or none bookings
+            x.innerHTML = name[5];
+            var x = row.insertCell(6);
+            x.innerHTML = "<form action='/booking_confirmation' method='POST'><input type='text' name='source' value="+name[0]+" hidden/><input type='text' name='destination' value="+name[1]+" hidden/><input type='text' name='train_name' value="+name[2]+" hidden/><input type='text' name='availability' value="+name[5]+" hidden/><button>BOOK</button></form>";
+            // console.log(row);
+            // console.log(myDiv);
 
 			myDiv.appendChild(row); 
             return;
-
 			
-		} 
+        } 
+        
+        function init() { 
+			var myDiv = document.getElementById("schedule_div"); 
+			
+			// creating checkbox element 
+			var row = document.createElement('tr'); 
+            var x = row.insertCell(0);   //source
+            x.innerHTML = "<u>SOURCE</u>";
+            var x = row.insertCell(1); //destination
+            x.innerHTML = "<u>DESTINATION</u>";
+            var x = row.insertCell(2); //train name
+            x.innerHTML = "<u>TRAIN NAME</u>";
+            var x = row.insertCell(3); //time
+            x.innerHTML = "<u>TIME</u>";
+            var x = row.insertCell(4); //seats capacity 
+            x.innerHTML = "<u>CAPACITY</u>";
+            var x = row.insertCell(5); //seats available after any or none bookings
+            x.innerHTML = "<u>AVAILABILITY</u>";
+			myDiv.appendChild(row); 
+            return;
+			
+        } 
+        init()
+    var train
     var trains = JSON.parse('{{ output | tojson }}');
 
     //console.log(trains)
     for (i = 0; i < trains.length;) 
         { 
             //console.log(trains[])
-            var trains_data = [trains[i+1],trains[i+2],trains[i+3],trains[i+4],trains[i+5]];
+            var trains_data = [trains[i+1],trains[i+2],trains[i+3],trains[i+4],trains[i+5],trains[i+6]];
             // //var name = trains[i];
             // //console.log("TRAIN STATUS")
             console.log(trains_data);
             geek(trains_data);
-            i=i+6;
+            i=i+7;
         }
 
         

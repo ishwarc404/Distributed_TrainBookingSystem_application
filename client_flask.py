@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request
 import json
 from socket import *
+import MySQLdb
 
 
 '''
@@ -21,8 +22,9 @@ def booking():
     source = str(request.form['source'])
     destination = str(request.form['destination'])
     train_name = str(request.form['train_name'])
+    avalilable_seats = request.form['availability'] #no of seats available in that train
     print("THE TRAIN U BOOKED IS",train_name," from: ",source," to: ",destination)
-    return render_template("booking_confirmation.html",booked_train_details = [source,destination,train_name])
+    return render_template("booking_confirmation.html",booked_train_details = [source,destination,train_name,avalilable_seats])
 
 @app.route("/booking_payment",methods = ['POST','GET']) #when the person finishes entering passenger details
 def payment():
@@ -81,7 +83,55 @@ def initial_user_data():
         processed_packet += [str(j) for j in i] #processing to handle the unicode encoding
 
     print("recieved packet type:",processed_packet)
-    return render_template("train_schedules.html",output=processed_packet)
+
+    #HERE; THE NUMBER OF SEATS AVAILABLE RETURNED FROM THE DB REFERS TO THE TOTAL CAPACITY OF THE TRAIN.
+    #BUT WE NEED TO SHOW TO THE USER THE NUMBER OF SEATS AVAILABLE FOR THAT DATE OF TRAVEL
+    #WE CAN SHOW IT AS AN ANOTHER COLUMN
+    #BUT WE NOW NEED TO KEEP TRACK OF THE DATE OF TRAVEL TOO. ACTUALLY NOT REALLY
+
+    #the processed packet contains the names of the trains
+    train_db = []
+    for i in range(3,len(processed_packet),6):
+        train_db+=[processed_packet[i]]
+
+    print("DATE OF TRAVEL",date_of_travel)
+
+    train_seats = []
+    for train_name in train_db:
+        #now we need to connect and access the sql database
+        db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
+        # prepare a cursor object using cursor() method
+        cursor = db.cursor()
+        sql = "SELECT Seats_booked FROM booking where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(date_of_travel,train_name)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        if(len(results)==0):
+            #means no bookings for that corresponding date and trains
+            sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            capacity = results[0][0]
+            train_seats += [capacity] #means the entire capacity is available for booking
+        else:
+            seats_booked = results[0][0] #these are the total seats booked
+            sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            capacity = results[0][0]
+            train_seats+=[capacity - seats_booked] #these are the total seats available
+
+    #we now need to insert the data from train seats back into the processed packet
+    #we need to make a new list now 
+    print("TRAIN SEATS ARE:",train_seats)
+    new_processed_packet = []
+    k = 0
+    for i in train_seats:
+        new_processed_packet += processed_packet[k:k+6]
+        new_processed_packet.append(i)
+        k +=6
+
+    # print("THE NEW PROCESSED PACKET IS:", new_processed_packet)
+    return render_template("train_schedules.html",output=new_processed_packet)
 
 
 def client_socket(packet):
@@ -93,7 +143,7 @@ def client_socket(packet):
     packet_json = json.dumps(packet)
     print("Sent from Client to the Sever:=",packet_json)
     print(type(packet_json))
-    clientSocket.send(packet_json)
+    clientSocket.send(packet_json.encode())
     received_packet = clientSocket.recv(1024)
     print ("From Server:",received_packet)
     clientSocket.close()
