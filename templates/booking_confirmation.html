@@ -30,15 +30,24 @@
     
     <script>
 
+        var incomming_packet = JSON.parse('{{booked_train_details | tojson}}');
+        console.log(incomming_packet)
+        var available_seats = incomming_packet[3]
         var counter = 1; //counter is 1 as we already have a single passenget field
         function add_passenger() //dynamically creating more fields
         {
             counter = counter +1 ;
+            if(available_seats - counter < 0) //will alert if the capacity is full
+            {
+                counter = counter -1;
+                alert("NO MORE FREE SEATS AVAILABLE!");
+                return;
+            }
             var myDiv = document.getElementById("passenger_details"); 
             var date = document.getElementById("datefeild");
             var counter_input = document.getElementById("counter_text");
             counter_input.value = counter;
-            console.log(counter_input.value);
+            //console.log(counter_input.value);
         
             var row = document.createElement('tr'); 
             row.id = "row"+counter.toString();
@@ -63,6 +72,7 @@
             var id = "row"+counter.toString();
             counter = counter - 1 ;
             var row = document.getElementById(id); 
+            //console.log(row)
             myDiv.removeChild(row);
             return;
         }
