@@ -31,7 +31,7 @@ def payment():
     no_of_passengers = int(no_of_passengers)
     date_of_travel = request.form["date_of_travel"]
     date_of_travel = str(date_of_travel)
-
+    train_name = request.form["train_name"]
 
     passenger_data = []
     for i in range(1,no_of_passengers+1):
@@ -40,7 +40,7 @@ def payment():
         passenger_data+=[[passenger_name,passenger_age]]
 
     
-    new_single_list = [date_of_travel] #adding the date of travel initially
+    new_single_list = [date_of_travel,train_name] #adding the date of travel initially
     for i in passenger_data:
         for j in i:
             new_single_list+=[j]

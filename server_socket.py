@@ -6,11 +6,14 @@ from datetime import datetime
 
 def passenger_database_access(packet):
 
-	#seperating out the date
+	#seperating out the date and the train_name
 	date_of_travel = packet[0]
 	packet.remove(date_of_travel)
-	print("DATE OF TRAVEL",date_of_travel)
-	print(type(date_of_travel))
+	train_name = packet[0]
+	packet.remove(train_name)
+	
+	# print("DATE OF TRAVEL",date_of_travel)
+	# print(type(date_of_travel))
 
 
 	passenger_data = {"Name":[],"Age":[]} #we need to make a list now with the passenger names and age
@@ -23,15 +26,76 @@ def passenger_database_access(packet):
 	#now we need to connect and access the sql database
 	db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
 
+
+
+
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 
-	#
-	sql = 'SELECT * FROM trains' 
+
+	# #testing
+	# sql = "INSERT INTO booking(Date_of_journey,Train_name,Seats_booked,Seats_available) VALUES (\'{}\',\'{}\',\'{}\',\'{}\');".format(date_of_travel,train_name,5,100)
+	# cursor.execute(sql)
+	# print("DONE")
+	# db.commit() 
+
+
+	"""now we first need to query the booking database
+	and check if there is a record with that date and train name"""
+	sql = "SELECT * FROM booking where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(date_of_travel,train_name)
 	cursor.execute(sql)
+	results = cursor.fetchall()
+	print("RESULTS ARE:",type(results),len(results))
+
+	"""based on the length of results we need to decide
+	if the length of the results is 0, means no row exists
+	if length of results in not 0, means some bookings exist"""
+	if(len(results)==0):
+		#means no row initially exists
+
+		#first we need to get the capacity of that particular train
+		#but here we are considering it all to be 100 by default except in the case of Chennai Express
+		#we'll deal with this later
+		#so now
+		print("FIRST IF")
+		seats_tobe_booked = len(passenger_data["Name"])
+		if(seats_tobe_booked <= 100): #initially
+			print("FIRST IF")
+			seats_available = 100 #this will never change. only the number of seats booked will keep changing ex. 15/100 ; 20/100 ; seatsbooked/seatsavailable ratio
+			sql = "INSERT INTO booking(Date_of_journey,Train_name,Seats_booked,Seats_available) VALUES (\'{}\',\'{}\',\'{}\',\'{}\');".format(date_of_travel,train_name,seats_tobe_booked,seats_available)
+			cursor.execute(sql)
+			db.commit()  #very important as only this authorizes the db changes
+
+			#just to get out of this function
+			confirm_packet = "DATABASE ACCESS COMPLETE"
+			return confirm_packet
 
 
-	return
+	else: #if that row already exists so len==1
+		print("SECOND IF")
+		seats_tobe_booked = len(passenger_data["Name"])
+		#now we first need to get the number of seats already booked
+		sql = "SELECT Seats_booked FROM booking where Date_of_journey=\'{}\' AND Train_name=\'{}\'".format(date_of_travel,train_name)
+		cursor.execute(sql)
+		results = cursor.fetchall()
+		seats_already_booked = results[0][0]
+		print("SEATS ALREADY BOOKED ARE",seats_already_booked)
+		if(seats_already_booked + seats_tobe_booked <= 100): #basically less than the capacity
+			print("here we need to modify the database")
+			seats_available = 100 #this will never change. only the number of seats booked will keep changing ex. 15/100 ; 20/100 ; seatsbooked/seatsavailable ratio
+			seats_tobe_booked = seats_already_booked + seats_tobe_booked
+			sql = "UPDATE booking SET Seats_booked={} where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(seats_tobe_booked,date_of_travel,train_name)
+			cursor.execute(sql)
+			db.commit()
+
+			#just to get out of this function
+			confirm_packet = "DATABASE ACCESS COMPLETE"
+			return confirm_packet
+		
+		#NEED TO ADD ELSE AND DO ERROR HANDLING
+
+
+	
 
 
 
@@ -126,7 +190,10 @@ while 1:
 	#FOR NOW LET'S JUST SEE HOW MANY VALUES ARE THERE
 	if(len(packet)!=3):
 		print("DB ACCESS 2")
-		passenger_database_access(packet)
+		values = passenger_database_access(packet) #DB CONFIRM PACKET
+		return_packet = values
+		return_packet = json.dumps(return_packet)
+		connectionSocket.send((return_packet).encode())
 		connectionSocket.close() 
 		#means it is the index page database access
 	else:
