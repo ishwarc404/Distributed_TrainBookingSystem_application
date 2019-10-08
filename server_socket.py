@@ -5,6 +5,14 @@ from datetime import datetime
 
 
 def passenger_database_access(packet):
+
+	#seperating out the date
+	date_of_travel = packet[0]
+	packet.remove(date_of_travel)
+	print("DATE OF TRAVEL",date_of_travel)
+	print(type(date_of_travel))
+
+
 	passenger_data = {"Name":[],"Age":[]} #we need to make a list now with the passenger names and age
 	for i in range(0,len(packet),2):
 		passenger_data["Name"]+=[packet[i]] 
@@ -18,7 +26,7 @@ def passenger_database_access(packet):
 	# prepare a cursor object using cursor() method
 	cursor = db.cursor()
 
-	#we are not querying anything but
+	#
 	sql = 'SELECT * FROM trains' 
 	cursor.execute(sql)
 

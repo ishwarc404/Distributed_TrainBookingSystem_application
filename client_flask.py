@@ -29,6 +29,9 @@ def payment():
     #we first need to get the numbe of passengers that were registered
     no_of_passengers = request.form['counter_text']
     no_of_passengers = int(no_of_passengers)
+    date_of_travel = request.form["date_of_travel"]
+    date_of_travel = str(date_of_travel)
+
 
     passenger_data = []
     for i in range(1,no_of_passengers+1):
@@ -37,11 +40,12 @@ def payment():
         passenger_data+=[[passenger_name,passenger_age]]
 
     
-    new_single_list = []
+    new_single_list = [date_of_travel] #adding the date of travel initially
     for i in passenger_data:
         for j in i:
             new_single_list+=[j]
    
+
     #commenting the following line for now until the database is sorted
     client_socket(new_single_list) #we do this as in the server, json cannot process a list oflis
     
