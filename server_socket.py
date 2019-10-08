@@ -4,6 +4,24 @@ import json
 from datetime import datetime
 
 
+def add_passenger_information(passenger_data):
+	names = passenger_data["Name"]
+	age = passenger_data["Age"]
+
+	length  = len(names)
+	for i in range(length):
+		pass_name = names[i]
+		pass_age = age[i]
+		db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
+		# prepare a cursor object using cursor() method
+		cursor = db.cursor()
+		sql = "INSERT INTO passenger(Name,Age) VALUES (\'{}\',{});".format(pass_name,pass_age)
+		cursor.execute(sql)
+		db.commit()
+
+	return
+
+
 def passenger_database_access(packet):
 
 	#seperating out the date and the train_name
@@ -66,6 +84,11 @@ def passenger_database_access(packet):
 			cursor.execute(sql)
 			db.commit()  #very important as only this authorizes the db changes
 
+
+			#we need to add passenger information to the passenger database too
+			add_passenger_information(passenger_data)
+
+
 			#just to get out of this function
 			confirm_packet = "DATABASE ACCESS COMPLETE"
 			return confirm_packet
@@ -87,6 +110,10 @@ def passenger_database_access(packet):
 			sql = "UPDATE booking SET Seats_booked={} where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(seats_tobe_booked,date_of_travel,train_name)
 			cursor.execute(sql)
 			db.commit()
+
+
+			#we need to add passenger information to the passenger database too
+			add_passenger_information(passenger_data)
 
 			#just to get out of this function
 			confirm_packet = "DATABASE ACCESS COMPLETE"
