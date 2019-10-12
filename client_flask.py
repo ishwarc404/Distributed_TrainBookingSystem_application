@@ -17,6 +17,13 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+@app.route("/ticket_cancellation")
+def cancellation():
+    ticket_id = str(request.form(["ticket_id"]))
+    #we now need to access the database and remove this particular row from there
+    
+
+
 @app.route("/booking_confirmation",methods = ['POST','GET']) #when the person clicks on Book
 def booking(): 
     source = str(request.form['source'])
