@@ -37,6 +37,7 @@
         function add_passenger() //dynamically creating more fields
         {
             counter = counter +1 ;
+            console.log(counter);
             if(available_seats - counter < 0) //will alert if the capacity is full
             {
                 counter = counter -1;
@@ -72,8 +73,10 @@
             var id = "row"+counter.toString();
             counter = counter - 1 ;
             var row = document.getElementById(id); 
-            //console.log(row)
+            var counter_input = document.getElementById("counter_text");
+            counter_input.value = counter;
             myDiv.removeChild(row);
+            console.log(counter)
             return;
         }
     

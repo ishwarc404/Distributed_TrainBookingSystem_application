@@ -21,7 +21,7 @@ def index():
 def cancellation():
     ticket_id = str(request.form(["ticket_id"]))
     #we now need to access the database and remove this particular row from there
-    
+
 
 
 @app.route("/booking_confirmation",methods = ['POST','GET']) #when the person clicks on Book
@@ -43,6 +43,7 @@ def payment():
     train_name = request.form["train_name"]
 
     passenger_data = []
+    print("NUMBER OF PASSENGERS REGISTERED::",no_of_passengers)
     for i in range(1,no_of_passengers+1):
         passenger_name = str(request.form["passenger_name"+str(i)])
         passenger_age = str(request.form["passenger_age"+str(i)])
