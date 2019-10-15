@@ -17,6 +17,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
+
 @app.route("/ticket_cancellation")
 def cancellation():
     ticket_id = str(request.form(["ticket_id"]))
@@ -158,10 +159,6 @@ def client_socket(packet):
     print("hello here")
     received_packet = json.loads(received_packet) #converting the json string to a list
     return received_packet #returning it back to the initial_user_datafunction
-
-
-
-
 
 
 if __name__ == "__main__":
