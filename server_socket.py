@@ -1,5 +1,6 @@
 from socket import *
-import MySQLdb
+#import MySQLdb
+import pymysql as MySQLdb
 import json
 from datetime import datetime
 

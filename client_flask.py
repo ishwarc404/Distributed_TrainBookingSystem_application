@@ -1,7 +1,9 @@
 from flask import Flask,render_template,request
 import json
 from socket import *
-import MySQLdb
+# import MySQLdb
+import pymysql as MySQLdb
+
 
 
 '''
