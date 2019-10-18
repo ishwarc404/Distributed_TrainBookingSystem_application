@@ -1,23 +1,35 @@
 <html>
-    <head></head>
+    <head>
+        <style>
+body {margin: 0; 
+     padding: 0; 
+     background-color:#C1FFFD;
+     text-align: center;
+    }
+</style>
+    </head>
+         
     <body>
-        <H1>CONFIRM DATE AND PASSENGER DETAILS FOR TRAINS FROM </H1>
+        <H1 style="margin-left:40px">CONFIRM DATE AND PASSENGER DETAILS FOR TRAINS FROM </H1>
         <div>
             {{booked_train_details[0]}}---->{{booked_train_details[1]}} ON {{booked_train_details[2]}}
 
         </div>
-       
+        <br>
         <div >
                 <button onclick="add_passenger()">Add Passenger</button>
             </div>
+            <br>
             <div >
                     <button onclick="delete_passenger()">Delete Passenger</button>
                 </div>
+                <br>
             <div >
                 <form action="/booking_payment" id="passenger_details" method="POST">
                     Passenger Name: <input type='text' name='passenger_name1' required>
                     <br>
-                    Passenger Age: <input type='number' name='passenger_age1' required>
+                    <br>
+                    Passenger  Age :  <input type='number' name='passenger_age1' required>
                     <br>
                     <input type="number" value="1" name="counter_text" id="counter_text" hidden>
                     <h2 id="datefeild">Date:</h2><input type="date" name="date_of_travel" >
