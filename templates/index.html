@@ -8,25 +8,59 @@ body {margin: 0;
      background-color:#C1FFFD;
     }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+      $("select").change(function(){
+      
+        var e = document.getElementById("op1");
+        var strUser = e.options[e.selectedIndex].value;
+
+        var e = document.getElementById("op2");
+        var strUser2 = e.options[e.selectedIndex].value;
+
+        // var op1 = document.getElementById("op1");
+        // var op2 = document.getElementById("op2");  
+        console.log(strUser)
+        console.log(strUser2)
+        if(strUser === strUser2)
+        {
+          alert("Source and Destination cannot be same!"); 
+          var e = document.getElementById("op1");
+          e.selectedIndex = 0;
+          var e = document.getElementById("op2");
+          e.selectedIndex = 0;
+        //   var e = document.getElementById("op2");
+        //   var strUser2 = e.options[e.selectedIndex].value; 
+        //   if(strUser2 != "Chennai")
+        //   {
+        //     return e.defaultSelected;
+        //   }
+        }
+        
+      });
+    });
+    </script>
+    
 </head>
 <body>
 
     <form action="/initial_user_data" method="POST">
         <h1>Railway Reservation  </h1>
         <h2 >Source:</h2>
-        <select name="source_name" onclick="init()">
-                <option id ="op1" value="Bangalore" onclick="init()">Bangalore</option>
-                <option id ="op1" value="Shimogga" onclick="init()">Shimogga</option>
-                <option id ="op1" value="Chennai" onclick="init()">Chennai</option>
-                <option id ="op1" value="Hubli" onclick="init()">Hubli</option>
+        <select name="source_name" id ="op1">
+                <option  value="Bangalore" >Bangalore</option>
+                <option  value="Shimogga">Shimogga</option>
+                <option  value="Chennai" >Chennai</option>
+                <option value="Hubli">Hubli</option>
                 
         </select>
         <h2>Destination:</h2>
-        <select name="destination_name" onclick="init()">
-                <option id ="op2" value="Chennai" onclick="init()">Chennai</option>
-                <option id ="op2" value="Shimogga" onclick="init()">Shimogga</option>
-                <option id ="op2" value="Bangalore" onclick="init()">Bangalore</option>
-                <option id ="op2" value="Hubli" onclick="init()">Hubli</option>
+        <select name="destination_name" id ="op2">
+                <option  value="Chennai" >Chennai</option>
+                <option  value="Shimogga" >Shimogga</option>
+                <option  value="Bangalore">Bangalore</option>
+                <option  value="Hubli">Hubli</option>
                 
         </select>
         <h2>Date:</h2><input type="date" name="date_of_travel" required>
@@ -46,21 +80,5 @@ body {margin: 0;
 
 </body>
 
-<script type="text/javascript">
-
-function init()
-{
-    var op1 = document.getElementById("op1");
-    var op2 = document.getElementById("op2");  
-    if(op1.value == op2.value)
-    {
-        alert("Source and Destination cannot be same!");
-    }
-
-}
-
-
-
-</script>
 
 </html>
