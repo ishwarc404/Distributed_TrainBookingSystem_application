@@ -13,10 +13,24 @@ body {margin: 0;
 
     <form action="/initial_user_data" method="POST">
         <h1>Railway Reservation  </h1>
-        <h2 >Source:</h2><input type="text" name="source_name">
-        <h2>Destination:</h2><input type="text"name="destination_name">
-        <h2>Date:</h2><input type="date" name="date_of_travel">
-        <h2>No of Passengers:</h2><input type="numeric" name="passenger_count">
+        <h2 >Source:</h2>
+        <select name="source_name" onclick="init()">
+                <option id ="op1" value="Bangalore" onclick="init()">Bangalore</option>
+                <option id ="op1" value="Shimogga" onclick="init()">Shimogga</option>
+                <option id ="op1" value="Chennai" onclick="init()">Chennai</option>
+                <option id ="op1" value="Hubli" onclick="init()">Hubli</option>
+                
+        </select>
+        <h2>Destination:</h2>
+        <select name="destination_name" onclick="init()">
+                <option id ="op2" value="Chennai" onclick="init()">Chennai</option>
+                <option id ="op2" value="Shimogga" onclick="init()">Shimogga</option>
+                <option id ="op2" value="Bangalore" onclick="init()">Bangalore</option>
+                <option id ="op2" value="Hubli" onclick="init()">Hubli</option>
+                
+        </select>
+        <h2>Date:</h2><input type="date" name="date_of_travel" required>
+        <h2>No of Passengers:</h2><input type="numeric" name="passenger_count" required>
         <button type="submit">SUBMIT DETAILS</button>
     </form>
     <br>
@@ -29,6 +43,24 @@ body {margin: 0;
     <button type="submit">Cancel Ticket</button>
     </form>
 
+
 </body>
+
+<script type="text/javascript">
+
+function init()
+{
+    var op1 = document.getElementById("op1");
+    var op2 = document.getElementById("op2");  
+    if(op1.value == op2.value)
+    {
+        alert("Source and Destination cannot be same!");
+    }
+
+}
+
+
+
+</script>
 
 </html>

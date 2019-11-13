@@ -70,13 +70,13 @@ def payment():
 def initial_user_data():
     #this function will get the basic user query and send it via the socket to the server socket
     
-    #getting all the form data
+    # getting all the form data
     source_location = request.form['source_name']
     destination_location = request.form['destination_name']
     date_of_travel = request.form['date_of_travel']
     passenger_count = request.form['passenger_count']
 
-    print(source_location,destination_location,date_of_travel) #just checking
+    # print(source_location,destination_location,date_of_travel) #just checking
     '''
     the following function will be used to create a socke and will be used
     to connect to the server socket and pass the information to it '''
@@ -107,32 +107,33 @@ def initial_user_data():
 
     print("DATE OF TRAVEL",date_of_travel)
 
-    train_seats = []
-    for train_name in train_db:
-        #now we need to connect and access the sql database
-        db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
-        # prepare a cursor object using cursor() method
-        cursor = db.cursor()
-        sql = "SELECT Seats_booked FROM booking where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(date_of_travel,train_name)
-        cursor.execute(sql)
-        results = cursor.fetchall()
-        if(len(results)==0):
-            #means no bookings for that corresponding date and trains
-            sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            capacity = results[0][0]
-            train_seats += [capacity] #means the entire capacity is available for booking
-        else:
-            seats_booked = results[0][0] #these are the total seats booked
-            sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
-            cursor.execute(sql)
-            results = cursor.fetchall()
-            capacity = results[0][0]
-            train_seats+=[capacity - seats_booked] #these are the total seats available
+    train_seats = [100 for i in range(len(train_db))]
 
-    #we now need to insert the data from train seats back into the processed packet
-    #we need to make a new list now 
+    # for train_name in train_db:
+    #     #now we need to connect and access the sql database
+    #     db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
+    #     # prepare a cursor object using cursor() method
+    #     cursor = db.cursor()
+    #     sql = "SELECT Seats_booked FROM booking where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(date_of_travel,train_name)
+    #     cursor.execute(sql)
+    #     results = cursor.fetchall()
+    #     if(len(results)==0):
+    #         #means no bookings for that corresponding date and trains
+    #         sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
+    #         cursor.execute(sql)
+    #         results = cursor.fetchall()
+    #         capacity = results[0][0]
+    #         train_seats += [capacity] #means the entire capacity is available for booking
+    #     else:
+    #         seats_booked = results[0][0] #these are the total seats booked
+    #         sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
+    #         cursor.execute(sql)
+    #         results = cursor.fetchall()
+    #         capacity = results[0][0]
+    #         train_seats+=[capacity - seats_booked] #these are the total seats available
+
+    # #we now need to insert the data from train seats back into the processed packet
+    # #we need to make a new list now 
     print("TRAIN SEATS ARE:",train_seats)
     new_processed_packet = []
     k = 0
@@ -146,7 +147,7 @@ def initial_user_data():
 
 
 def client_socket(packet):
-    serverName = '127.0.0.1'
+    serverName = '169.254.161.103'
     serverPort = 12000
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))
@@ -154,7 +155,7 @@ def client_socket(packet):
     packet_json = json.dumps(packet)
     print("Sent from Client to the Sever:=",packet_json)
     print(type(packet_json))
-    clientSocket.send(packet_json.encode())
+    clientSocket.send(packet_json.encode()) #sending to the server
     received_packet = clientSocket.recv(1024)
     print ("From Server:",received_packet)
     clientSocket.close()
@@ -164,4 +165,4 @@ def client_socket(packet):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

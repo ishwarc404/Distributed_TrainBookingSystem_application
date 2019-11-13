@@ -160,10 +160,10 @@ def schedule_database_access(packet):
 	#table name is trains
 
 	#proper sql command
-	#sql = 'SELECT * FROM trains where From_City= \'{}\' AND To_City=\'{}\''.format(parsed_packet["Source"],parsed_packet["Destination"])
+	sql = 'SELECT * FROM trains where From_City= \'{}\' AND To_City=\'{}\''.format(parsed_packet["Source"],parsed_packet["Destination"])
 	
 	#test sql command to return multiple rows
-	sql = 'SELECT * FROM trains' #where From_City= \'{}\' AND To_City=\'{}\''.format(parsed_packet["Source"],parsed_packet["Destination"])
+	# sql = 'SELECT * FROM trains' #where From_City= \'{}\' AND To_City=\'{}\''.format(parsed_packet["Source"],parsed_packet["Destination"])
 	
 	#test sql command if mysql is not installed
 	# returned_row = [[1, 'Boongalore', 'Shimogga', 'Shatabdi ', '8:00:00'], [2, 'Bangalore', 'Chennai', 'Lalbagh', '0:00:08'], [3, 'Bangalore', 'Hubli', 'double decker', '0:00:10'], [4, 'Hubli', 'Shimogga', 'Lalbagh', '0:00:11'], [5, 'Chennai', 'Bangalore', 'Mail', '0:00:07'], [6, 'Chennai', 'Shimogga', 'Chennai Express', '0:00:13']]
