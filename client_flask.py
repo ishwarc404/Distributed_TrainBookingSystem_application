@@ -74,7 +74,7 @@ def initial_user_data():
     source_location = request.form['source_name']
     destination_location = request.form['destination_name']
     date_of_travel = request.form['date_of_travel']
-    passenger_count = request.form['passenger_count']
+    # passenger_count = request.form['passenger_count']
 
     # print(source_location,destination_location,date_of_travel) #just checking
     '''
@@ -107,33 +107,34 @@ def initial_user_data():
 
     print("DATE OF TRAVEL",date_of_travel)
 
-    train_seats = [100 for i in range(len(train_db))]
+    train_seats = []
+    # train_seats = [100 for i in range(len(train_db))]  ##uncomment this if the next db part is working
 
-    # for train_name in train_db:
-    #     #now we need to connect and access the sql database
-    #     db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
-    #     # prepare a cursor object using cursor() method
-    #     cursor = db.cursor()
-    #     sql = "SELECT Seats_booked FROM booking where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(date_of_travel,train_name)
-    #     cursor.execute(sql)
-    #     results = cursor.fetchall()
-    #     if(len(results)==0):
-    #         #means no bookings for that corresponding date and trains
-    #         sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
-    #         cursor.execute(sql)
-    #         results = cursor.fetchall()
-    #         capacity = results[0][0]
-    #         train_seats += [capacity] #means the entire capacity is available for booking
-    #     else:
-    #         seats_booked = results[0][0] #these are the total seats booked
-    #         sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
-    #         cursor.execute(sql)
-    #         results = cursor.fetchall()
-    #         capacity = results[0][0]
-    #         train_seats+=[capacity - seats_booked] #these are the total seats available
+    for train_name in train_db:
+        #now we need to connect and access the sql database
+        db = MySQLdb.connect("localhost","root","rootroot","train_tkt" ) 
+        # prepare a cursor object using cursor() method
+        cursor = db.cursor()
+        sql = "SELECT Seats_booked FROM booking where Date_of_journey=\'{}\' AND Train_name=\'{}\';".format(date_of_travel,train_name)
+        cursor.execute(sql)
+        results = cursor.fetchall()
+        if(len(results)==0):
+            #means no bookings for that corresponding date and trains
+            sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            capacity = results[0][0]
+            train_seats += [capacity] #means the entire capacity is available for booking
+        else:
+            seats_booked = results[0][0] #these are the total seats booked
+            sql = "SELECT No_of_available_seat FROM trains where Trains=\'{}\';".format(train_name)
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            capacity = results[0][0]
+            train_seats+=[capacity - seats_booked] #these are the total seats available
 
-    # #we now need to insert the data from train seats back into the processed packet
-    # #we need to make a new list now 
+    #we now need to insert the data from train seats back into the processed packet
+    #we need to make a new list now 
     print("TRAIN SEATS ARE:",train_seats)
     new_processed_packet = []
     k = 0
@@ -147,7 +148,8 @@ def initial_user_data():
 
 
 def client_socket(packet):
-    serverName = '169.254.161.103'
+    # serverName = '169.254.161.103'
+    serverName = '127.0.0.1'
     serverPort = 12000
     clientSocket = socket(AF_INET, SOCK_STREAM)
     clientSocket.connect((serverName,serverPort))

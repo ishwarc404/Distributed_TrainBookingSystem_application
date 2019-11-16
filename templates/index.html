@@ -25,11 +25,35 @@ body {margin: 0;
         console.log(strUser2)
         if(strUser === strUser2)
         {
+          console.log(strUser)
+          if(strUser==="Chennai")
+          {
+            {
+            var e = document.getElementById("op1");
+            e.selectedIndex = 2;
+            var e = document.getElementById("op2");
+            e.selectedIndex = 1;
+            }
+
+          if(strUser2==="Chennai")
+          {
+            {
+            var e = document.getElementById("op2");
+            e.selectedIndex = 1;
+            }
+          }
+
+          }
+          else
+          {
           alert("Source and Destination cannot be same!"); 
           var e = document.getElementById("op1");
           e.selectedIndex = 0;
           var e = document.getElementById("op2");
           e.selectedIndex = 0;
+          }
+
+          
         //   var e = document.getElementById("op2");
         //   var strUser2 = e.options[e.selectedIndex].value; 
         //   if(strUser2 != "Chennai")
